@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Facultad de Ingeniería en Sistemas, Electrónica e Industrial</title>
+    <link rel="icon"
+        href="https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/favicon/1702489518/sistemas.png" />
+    <link rel="stylesheet" href="estilo_MatricularEstudiantes.css" />
+</head>
+
+<body>
+    <div id="contenedorBarra">
+        <div id="barra_superior">
+            <button id="notifications">
+                <img src="https://img.icons8.com/?size=512&id=37084&format=png" alt="" width="20" height="20" />
+            </button>
+
+            <button id="perfil">
+                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt=""
+                    width="20" height="20" />
+            </button>
+        </div>
+        <div id="barra_superior2">
+            <img src="https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/logo/1702489518/sistemas.png"
+              alt="" width="250" height="90" />
+            <h1 id="encabezado">Plataforma Educativa UTA</h1>
+        
+          </div>
+        
+          <div id="cinta_opciones">
+            <button id="btn_inicio"  onclick="redirectToInicio()"> 
+                     <img src="IMG/House.png" alt="" width="30" height="30" />
+              Inicio</button>
+            <button id="btn_dashboard" onclick="redirectToAsignarTareas()">
+              <img src="IMG/Libreta.png" alt="" width="30" height="30" />
+              Tareas</button>
+            <button id="btn_mis_asignaturas" onclick="traerAsignaturas()">
+              <img src="IMG/Mochila.png" alt="" width="30" height="30" />
+              Mis Asignaturas</button>
+            <button id="btn_registroCurso" onclick="redirectToRegistroCurso()">
+              <img src="IMG/Lista.png" alt="" width="25" height="25" />
+              Registrar Curso</button>
+            <button id="btn_registroAsignatura" onclick="redirectToRegistroAsignatura()">
+              <img src="IMG/Profesor.png" alt="" width="30" height="30" />
+              Registrar Asignatura</button>
+            <button id="btn_MatricularEstudiantes" onclick="redirectToMatricularEstudiante()">
+              <img src="IMG/Estudiante.png" alt="" width="30" height="30" />
+              Matricular Estudiante</button>
+        
+            <button id="btn_RegistrarUsuario" onclick="redirectToRegistroUsuario()">
+              <img src="IMG/Usuarios.png" alt="" width="30" height="30" />
+              Registrar Usuario</button>
+            </div>
+          </div>
+        
+    <div id="asignaturasContainer"></div>
+    <script>
+        function traerAsignaturas() {
+            window.location.href = 'mostrarAsignatura.html';
+        }
+        function redirectToAdministrarAsignatura() {
+            window.location.href = 'administrarAsignatura.html';
+        }
+        function redirectToAsignarTareas() {
+            window.location.href = 'asignarTareas.html';
+        }
+        function redirectToRegistroAsignatura() {
+            window.location.href = 'registro_Asignaturas.html';
+        }
+        function redirectToMatricularEstudiante() {
+            window.location.href = 'matricularEstudiante.html';
+        }
+        function redirectToInicio() {
+            window.location.href = 'inicio.html';
+        }
+        function redirectToRegistroCurso() {
+            window.location.href = 'registro_Cursos.html';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tu código JavaScript aquí
+            const correoUsuario = localStorage.getItem("correousuario");
+            const pagina = "";
+            fetch("../Clases/mostrarAsignaturasE.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: "correoUsuario=" + encodeURIComponent(correoUsuario),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error en la solicitud al servidor: " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(asignaturas => {
+                    console.log('Asignaturas:', asignaturas);
+
+                    const asignaturasContainer = document.getElementById("asignaturasContainer");
+                    if (asignaturasContainer) {
+                        asignaturasContainer.innerHTML = '';
+                        if (asignaturas.length === 0) {
+                            const mensajeNoAsignaturas = document.createElement("p");
+                            mensajeNoAsignaturas.textContent = "No tiene asignaturas.";
+                            asignaturasContainer.appendChild(mensajeNoAsignaturas);
+                        } else {
+                            asignaturas.forEach(asignatura => {
+                                const botonAsignatura = document.createElement("button");
+                                botonAsignatura.classList.add("cuadrado-asignatura"); // Agregar clase para el estilo cuadrado
+
+                                // Asegurarse de que asignatura tiene la propiedad "nombre"
+                                const nombreAsignatura = asignatura.nombre || "Nombre no disponible";
+
+                                botonAsignatura.textContent = nombreAsignatura;
+                                asignaturasContainer.appendChild(botonAsignatura);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error durante la solicitud:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>

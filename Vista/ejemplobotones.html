@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Botones según Rol</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="btnMatricular" class="hidden">Matricular</button>
+  <button id="btnTareas" class="hidden">Tareas</button>
+  <button id="btnAsignaturas" class="hidden">Asignaturas</button>
+  <button id="btnCrearCurso" class="hidden">Crear Curso</button>
+  <button id="btnCrearAsignatura" class="hidden">Crear Asignatura</button>
+
+  <script>
+    // Tu lógica JavaScript aquí para obtener el rol
+    var rol = obtenerRol(); // Debes implementar esta función
+
+    // Lógica para mostrar u ocultar botones según el rol
+    if (rol === "estudiante") {
+      mostrarElemento("btnMatricular");
+      mostrarElemento("btnTareas");
+      mostrarElemento("btnAsignaturas");
+    } else if (rol === "docente") {
+      mostrarElemento("btnMatricular");
+      mostrarElemento("btnTareas");
+      mostrarElemento("btnAsignaturas");
+      mostrarElemento("btnCrearCurso");
+      mostrarElemento("btnCrearAsignatura");
+    }
+
+    // Función para mostrar un elemento
+    function mostrarElemento(id) {
+      var elemento = document.getElementById(id);
+      if (elemento) {
+        elemento.classList.remove('hidden');
+      }
+    }
+
+    // Implementa tu lógica para obtener el rol
+    function obtenerRol() {
+      // Simplemente para el ejemplo, puedes cambiar esta lógica según tus necesidades
+      return "estudiante";
+    }
+  </script>
+</body>
+
+</html>

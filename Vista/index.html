@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facultad de Ingeniería en Sistemas, Electrónica e Industrial</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+
+<body>
+  <div id="contenedor-encabezado">
+    <div id="logo-izquierdo">
+      <img
+        src="https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/adaptablemarkettingimages/0/logo_uta.png"
+        alt="" width="80" height="80" />
+    </div>
+    <div id="texto-central">
+      <h2>PLATAFORMA EDUCATIVA <br />INSTITUCIONAL</h2>
+      <h3>
+        FACULTAD DE INGENIERÍA EN <br />SISTEMAS, ELECTRÓNICA E
+        <br />INDUSTRIAL
+      </h3>
+    </div>
+    <div id="logo-derecho">
+      <img
+        src="https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/adaptablemarkettingimages/0/sistemas_sello.png"
+        alt="." width="80" height="64" />
+    </div>
+  </div>
+  <div id="contenedor-login">
+    <div class="formulario-acceso">
+      <form class="formulario-login" action="../Clases/Login_Registro.php" method="post" id="login">
+        <div class="campo-usuario form-group">
+          <input type="text" name="usuario" id="usuario" class="usuariocorreo" placeholder="Correo Electrónico"
+            autocomplete="usuario" />
+        </div>
+        <div class="campo-contrasena">
+          <input type="password" name="contrasena" id="contrasena" value="" class="contraseña" placeholder="Contraseña"
+            autocomplete="current-password" />
+        </div>
+        <!-- Agrega este div al interior del formulario, después de los campos de entrada -->
+        <div id="mensaje-error" class="mensaje-error"></div>
+
+        <div class="campo-enviar form-group">
+          <button class="boton-acceso btn btn-primary btn-lg btn-block" type="submit" id="boton-login">
+            Acceder
+          </button>
+        </div>
+        <a href="#" class="crear-cuenta" title="crear-cuenta" id="crearCuentaLink">
+          Crear Cuenta <br />
+        </a>
+        <a
+        href="#"
+        class="recuperar-contraseña"
+        title="recuperar-contraseña"
+        id="recuperarContrasenaLink"
+      >
+        Olvidé mi contraseña
+      </a>
+      </form>
+      <div class="separador-acceso"></div>
+      <div class="proveedores-identidad">
+        <h3 class="encabezado-login">Identifíquese usando su cuenta en:</h3>
+        <a href="index.php" title="Gmail">
+          <!-- Modificado el enlace -->
+          <button class="boton-Registro">
+            <img
+              src="https://www.google.com/gmail/about/static-2.0/images/logo-gmail.png?fingerprint=c2eaf4aae389c3f885e97081bb197b97"
+              alt="Gmail" width="24" height="24" />
+            Iniciar con Gmail
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="contenedor-recuperacion" style="display: none">
+    <div class="formulario-recuperacion">
+      <h3>Recuperación de Contraseña</h3>
+      <form
+        class="formulario-login"
+        action="recuperar_contrasena.php"
+        method="post"
+        id="recuperacion"
+      >
+        <!-- Agrega los campos necesarios para la recuperación de contraseña -->
+        <div class="campo-recuperacion form-group">
+          <input
+            type="text"
+            name="correo-recuperacion"
+            class="correo-recuperacion"
+            placeholder="Correo Electrónico"
+            autocomplete="email"
+            id="correo-recuperacion"
+          />
+        </div>
+
+        <!-- Agrega un mensaje para mostrar el resultado de la recuperación -->
+        <div
+          id="mensaje-recuperacion"
+          class="mensaje-error-recuperacion"
+        ></div>
+
+        <button
+          class="volver-login btn btn-secondary btn-lg btn-block"
+          id="volverLoginRecuperacionBtn"
+        >
+          Volver al Inicio de Sesión
+        </button>
+        <br />
+
+        <button
+          class="boton-recuperacion btn btn-success btn-lg btn-block"
+          type="submit"
+          id="boton-recuperacion"
+        >
+          Recuperar Contraseña
+        </button>
+      </form>
+    </div>
+  </div>
+  <div id="contenedor-registro" style="display: none">
+    <div class="formulario-registro">
+      <h3>Crear Cuenta</h3>
+      <form class="formulario-login" action="../Clases/Login_Registro.php" method="post" id="registro">
+        <input type="hidden" name="registro" value="1" />
+        <!-- Agrega este campo oculto -->
+        <!-- Resto de tus campos de entrada -->
+        <div class="campo-registro form-group">
+          <input type="email" name="correo-electronico" class="correo-electronico" placeholder="Correo Electrónico"
+            autocomplete="email" id="correo-electronico-registro" />
+        </div>
+        <div class="campo-registro form-group">
+          <input type="password" name="nueva-contrasena" id="nueva-contrasena" class="nueva-contrasena"
+            placeholder="Contraseña" autocomplete="new-password" />
+        </div>
+        <div class="campo-registro form-group">
+          <input type="text" name="nombre" id="nombre" class="nombre" placeholder="Nombre" autocomplete="given-name" />
+        </div>
+
+        <div class="campo-registro form-group">
+          <input type="text" name="apellido" id="apellido" id="nombre" nueva-contrasena class="apellido"
+            placeholder="Apellido" autocomplete="family-name" />
+        </div>
+        <div id="divCodigoVerificacion" style="display: none">
+          <h3>Verificación de Código</h3>
+          <p>
+            Ingresa el código de verificación enviado a tu correo electrónico:
+          </p>
+          <input type="text" id="codigoVerificacion" placeholder="Código de Verificación" />
+          <button id="btnVerificarCodigo" type="button">
+            Verificar Código
+          </button>
+        </div>
+
+        <div class="campo-registro form-group">
+          <label for="rol">Rol:</label>
+          <select name="rol" id="rol" class="rol">
+            <option value="estudiante">Estudiante</option>
+            <option value="docente">Docente</option>
+          </select>
+        </div>
+        <button class="volver-login btn btn-secondary btn-lg btn-block" id="volverLoginBtn">
+          Ya tengo una cuenta
+        </button>
+        <br />
+        <div id="mensaje-registro" class="mensaje-error-registro"></div>
+
+        <button class="boton-registro btn btn-success btn-lg btn-block" type="submit" id="boton-registro">
+          Registrarse
+        </button>
+      </form>
+    </div>
+  </div>
+  <script>
+    var registroRealizado = false;
+    document.addEventListener("DOMContentLoaded", function () {
+      function mostrarMensaje(mensaje, color, elemento) {
+        var mensajeElemento = document.getElementById(elemento);
+        mensajeElemento.textContent = mensaje;
+        mensajeElemento.style.color = color;
+        mensajeElemento.style.backgroundColor = "#ffe0e0";
+        mensajeElemento.style.display = "block";
+
+        setTimeout(function () {
+          mensajeElemento.style.display = "none";
+        }, 5000);
+      }
+
+      function validarRegistro() {
+        var correoElectronico = document.getElementById(
+          "correo-electronico-registro"
+        ).value;
+        var nuevaContrasena =
+          document.getElementById("nueva-contrasena").value;
+        var nombre = document.getElementById("nombre").value;
+        var apellido = document.getElementById("apellido").value;
+        var rol = document.getElementById("rol").value;
+
+        // Validar que los campos no estén vacíos
+        if (
+          camposVacios(correoElectronico, nuevaContrasena, nombre, apellido)
+        ) {
+          mostrarMensaje(
+            "Todos los campos son obligatorios",
+            "red",
+            "mensaje-registro"
+          );
+          return false;
+        }
+
+        // Validar que los campos no contengan espacios ni caracteres especiales
+        if (contieneCaracteresEspeciales(nombre, apellido)) {
+          mostrarMensaje(
+            "Nombre y apellido no deben contener espacios ni caracteres especiales",
+            "red",
+            "mensaje-registro"
+          );
+          return false;
+        }
+
+        // Realizar la solicitud AJAX de registro
+
+        return true;
+      }
+
+      function camposVacios(...campos) {
+        return campos.some((campo) => campo.trim() === "");
+      }
+
+      function contieneCaracteresEspeciales(...campos) {
+        const caracteresEspeciales = /[!@#$%^&*(),.?":{}|<>]/;
+        return campos.some(
+          (campo) => caracteresEspeciales.test(campo) || /\s/.test(campo)
+        );
+      }
+      function ocultarElementosRegistro() {
+        var contenedorRegistro = document.getElementById(
+          "contenedor-registro"
+        );
+
+        var elementosRegistro = contenedorRegistro.querySelectorAll(
+          "input, button, select, label, span"
+        );
+
+        elementosRegistro.forEach(function (elemento) {
+          if (
+            elemento.id !== "divCodigoVerificacion" &&
+            !elemento.closest("#divCodigoVerificacion")
+          ) {
+            elemento.style.display = "none";
+          }
+        });
+
+        var divCodigoVerificacion = document.getElementById(
+          "divCodigoVerificacion"
+        );
+        divCodigoVerificacion.style.display = "block";
+
+        var elementosCodigoVerificacion =
+          divCodigoVerificacion.querySelectorAll(
+            "input, button, select, label, span"
+          );
+
+        elementosCodigoVerificacion.forEach(function (elemento) {
+          elemento.style.display = "block";
+        });
+      }
+
+      function realizarRegistro() {
+        console.log(correoElectronicoRegistro);
+
+        fetch("../Clases/Login_Registro.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body:
+            "accion=registro" +
+            "&correo-electronico-registro=" +
+            encodeURIComponent(correoElectronicoRegistro) +
+            "&nueva-contrasena=" +
+            encodeURIComponent(contrasenareg) +
+            "&nombre=" +
+            encodeURIComponent(nombrereg) +
+            "&apellido=" +
+            encodeURIComponent(apellidoreg) +
+            "&rol=" +
+            encodeURIComponent(rolreg) +
+            "&codigo-usuario=" +
+            encodeURIComponent(codigoVerificacionGuardado), // Agregar el código de usuario
+        })
+          .then(function (response) {
+            console.log(response); // Imprime la respuesta completa
+
+            if (response.ok) {
+              mostrarMensaje(
+                "Registro exitoso, por favor inicie sesión",
+                "green",
+                "mensaje-registro"
+              );
+              setTimeout(function () {
+                location.reload(true);
+              }, 5000);
+              return true;
+            } else {
+              mostrarMensaje("Error de red", "red", "mensaje-registro");
+              return false;
+            }
+          })
+          .catch(function (error) {
+            mostrarMensaje("Error de red", "red", "mensaje-registro");
+          });
+      }
+      function verificarCorreoRegistrado(correoElectronico) {
+        const body = new URLSearchParams();
+        body.append("accion", "verificar_correo");
+        body.append("correo-electronico", correoElectronico);
+
+        return fetch("verificar_correo.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: body.toString(),
+        })
+          .then(function (response) {
+            if (response.ok) {
+              return response.json();
+            } else {
+              // Manejar errores de red o del servidor
+              throw new Error("Error al verificar el correo");
+            }
+          })
+          .then(function (data) {
+            if (data && data.registrado) {
+              // El correo ya está registrado
+              mostrarMensaje(
+                "El correo ya está registrado",
+                "red",
+                "mensaje-registro"
+              );
+              return false;
+            } else {
+              // El correo no está registrado
+              return true;
+            }
+          })
+          .catch(function (error) {
+            console.error(error.message);
+            return false; // Puedes manejar el error según tus necesidades
+          });
+      }
+      function desactivarInputs() {
+        // Desactivar los inputs
+        document.getElementById(
+          "correo-electronico-registro"
+        ).readOnly = true;
+        document.getElementById("nombre").readOnly = true;
+        document.getElementById("apellido").readOnly = true;
+        document.getElementById("nueva-contrasena").readOnly = true;
+
+        document.getElementById("rol").readOnly = true;
+      }
+      function mostrarDivVerificacion() {
+        var divCodigoVerificacion = document.getElementById(
+          "divCodigoVerificacion"
+        );
+        divCodigoVerificacion.style.display = "block";
+      }
+      function verificarCodigo() {
+        // Obtiene el valor ingresado en el input de código de verificación
+        var codigoIngresado =
+          document.getElementById("codigoVerificacion").value;
+
+        // Compara el código ingresado con el código guardado
+        if (codigoIngresado === codigoVerificacionGuardado) {
+          // Código correcto, puedes realizar las acciones necesarias
+          mostrarMensaje(
+            "Código de verificación ingresado correctamente",
+            "green",
+            "mensaje-registro"
+          );
+
+          return true;
+        } else {
+          mostrarMensaje(
+            "Código de verificación incorrecto",
+            "red",
+            "mensaje-registro"
+          );
+          return false;
+        }
+      }
+      function manejarErroresRegistro(response) {
+        if (response.status === 409) {
+          response.json().then(function (data) {
+            if (
+              data &&
+              data.error &&
+              data.error === "Usuario ya registrado"
+            ) {
+              mostrarMensaje(
+                "Error: Usuario ya registrado",
+                "red",
+                "mensaje-registro"
+              );
+              return false;
+            } else {
+              mostrarMensaje("Error al registrar", "red", "mensaje-registro");
+            }
+            return false;
+          });
+        } else {
+          response.json().then(function (data) {
+            // Verifica si el error proviene de una violación de clave primaria
+            if (data && data.error && data.error.includes("primary key")) {
+              mostrarMensaje(
+                "Error: Violación de clave primaria",
+                "red",
+                "mensaje-registro"
+              );
+              return false;
+            } else {
+              mostrarMensaje("Error al registrar", "red", "mensaje-registro");
+              return false;
+            }
+          });
+        }
+      }
+      function mostrarRegistro() {
+        var contenedorRegistro = document.getElementById(
+          "contenedor-registro"
+        );
+        contenedorRegistro.style.display = "block";
+
+        // Hacer visible el contenedor de registro
+        var mensajeRegistro = document.getElementById("mensaje-registro");
+        mensajeRegistro.style.display = "block";
+
+        // Opcionalmente, puedes ocultar el contenedor de inicio de sesión
+        var contenedorLogin = document.getElementById("contenedor-login");
+        contenedorLogin.style.display = "none";
+      }
+      function volverLogin() {
+        var contenedorLogin = document.getElementById("contenedor-login");
+        contenedorLogin.style.display = "block";
+
+        var contenedorRegistro = document.getElementById(
+          "contenedor-registro"
+        );
+        contenedorRegistro.style.display = "none";
+      }
+      async function enviarCorreo(correoElectronico) {
+        try {
+          const response = await fetch("send_email.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body:
+              "correo-electronico=" + encodeURIComponent(correoElectronico),
+          });
+
+          if (response.ok) {
+            // Email enviado correctamente
+            //  console.log("Email enviado correctamente");
+            return response.text();
+            return true;
+          } else {
+            // Error al enviar el correo
+            console.error("Error al enviar el correo");
+
+            const data = await response.json();
+            console.error("Error: " + data.error);
+            return false;
+          }
+        } catch (error) {
+          // Error de red
+          console.error("Error de red", error);
+          return false;
+        }
+      }
+      document
+        .getElementById("btnVerificarCodigo")
+        .addEventListener("click", function () {
+          // Llama a la función para verificar el código
+          if (verificarCodigo() && !registroRealizado) {
+            var botonverificar =
+              document.getElementById("btnVerificarCodigo");
+            botonverificar.disabled = true;
+            if (realizarRegistro() == true) {
+              registroRealizado = true; // Marca el registro como realizado
+            }
+          }
+        });
+
+      document
+        .getElementById("crearCuentaLink")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          mostrarRegistro();
+        });
+      document
+        .getElementById("boton-recuperacion")
+        .addEventListener("click", async function (event) {
+          event.preventDefault();
+          var btnrec = document.getElementById("boton-recuperacion");
+          btnrec.disabled = true;
+
+          // Declarar las variables fuera del bloque try para que estén disponibles en todo el ámbito de la función
+          let correoRecuperacion;
+          let codigoRecuperacion;
+
+          try {
+            const correoRecuperacionValue =
+              document.getElementById("recuperacion").elements[
+                "correo-recuperacion"
+              ].value;
+            localStorage.setItem(
+              "correoRecuperacion",
+              correoRecuperacionValue
+            );
+
+            const response = await fetch("recuperar_contrasena.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: new URLSearchParams({
+                accion: "enviar_codigo", // Agregar una acción para enviar el correo
+                "correo-recuperacion": correoRecuperacionValue,
+              }),
+            });
+
+            console.log("Respuesta del servidor:", response);
+
+            if (response.ok) {
+              const data = await response.json();
+              // Guarda los datos en el almacenamiento local
+              localStorage.setItem("codigoRecuperacion", data.codigo);
+
+              // Asigna los valores a las variables
+              correoRecuperacion = correoRecuperacionValue;
+              codigoRecuperacion = data.codigo;
+
+              console.log("Correo Recuperación:", correoRecuperacion);
+              console.log("Código Recuperación:", codigoRecuperacion);
+
+              mostrarMensaje(
+                "Correo Enviado Correctamente, redirigiendo a cambio de contraseña",
+                "green",
+                "mensaje-recuperacion"
+              );
+              setTimeout(() => {
+                // Redirige a la página de recuperación con el código y correo como parámetros
+                window.location.href = "recuperacion.html";
+              }, 3000);
+            } else {
+              const data = await response.json();
+              if (data && data.error) {
+                mostrarMensaje(
+                  "No se envió el correo",
+                  "red",
+                  "mensaje-recuperacion"
+                );
+                btnrec.disabled = false;
+              } else {
+                mostrarMensaje(
+                  "Error al procesar la solicitud",
+                  "red",
+                  "mensaje-recuperacion"
+                );
+              }
+            }
+          } catch (error) {
+            console.log(error);
+            mostrarMensaje("Error de red", "red", "mensaje-recuperacion");
+          }
+        });
+
+      document
+        .getElementById("volverLoginBtn")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          volverLogin();
+        });
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var errorParam = urlParams.get("error");
+
+      if (errorParam) {
+        mostrarMensaje(errorParam, "red", "mensaje-registro");
+      }
+
+      document
+        .getElementById("login")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var usuario = document.getElementById("usuario").value;
+          var contrasena = document.getElementById("contrasena").value;
+
+          if (usuario.trim() === "" || contrasena.trim() === "") {
+            mostrarMensaje(
+              "Ambos campos son obligatorios",
+              "red",
+              "mensaje-error"
+            );
+            return;
+          }
+
+          // Agrega el campo "accion" para indicar que es una solicitud de inicio de sesión
+          fetch("../Clases/Login_Registro.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body:
+              "accion=login" +
+              "&usuario=" +
+              encodeURIComponent(usuario) +
+              "&contrasena=" +
+              encodeURIComponent(contrasena),
+          })
+            .then(function (response) {
+              if (response.ok) {
+                localStorage.setItem("correousuario",document.getElementById("usuario").value);
+                window.location.href = "Inicio.html";
+              } else {
+                if (response.status === 401) {
+                  mostrarMensaje(
+                    "Credenciales incorrectas",
+                    "red",
+                    "mensaje-error"
+                  );
+                } else {
+                  mostrarMensaje(
+                    "Error del servidor",
+                    "red",
+                    "mensaje-error"
+                  );
+                }
+              }
+            })
+            .catch(function (error) {
+              mostrarMensaje("Error de red", "red", "mensaje-error");
+            });
+        });
+      var codigoVerificacionGuardado;
+      var apellidoreg;
+      var nombrereg;
+      var contrasenareg;
+      var rolreg;
+      var correoElectronicoRegistro;
+      document
+        .getElementById("registro")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          var botonRegistro = document.getElementById("boton-registro");
+          botonRegistro.disabled = true;
+          correoElectronicoRegistro = document.getElementById(
+            "correo-electronico-registro"
+          ).value;
+          apellidoreg = document.getElementById("apellido").value;
+          nombrereg = document.getElementById("nombre").value;
+          contrasenareg = document.getElementById("nueva-contrasena").value;
+          rolreg = document.getElementById("rol").value;
+          if (validarRegistro()) {
+            if (await verificarCorreoRegistrado(correoElectronicoRegistro)) {
+              desactivarInputs();
+              enviarCorreo(correoElectronicoRegistro).then(function (
+                codigoVerificacion
+              ) {
+                // Muestra el div de verificación
+                mostrarDivVerificacion();
+                ocultarElementosRegistro();
+                codigoVerificacionGuardado = codigoVerificacion;
+              });
+            }
+          }
+        });
+      document
+        .getElementById("recuperarContrasenaLink")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          mostrarRecuperacion();
+        });
+
+      document
+        .getElementById("volverLoginRecuperacionBtn")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+          volverLogin();
+        });
+
+      function mostrarRecuperacion() {
+        var contenedorRecuperacion = document.getElementById(
+          "contenedor-recuperacion"
+        );
+        contenedorRecuperacion.style.display = "block";
+
+        // Opcionalmente, puedes ocultar el contenedor de inicio de sesión y registro
+        var contenedorLogin = document.getElementById("contenedor-login");
+        var contenedorRegistro = document.getElementById(
+          "contenedor-registro"
+        );
+        contenedorLogin.style.display = "none";
+        contenedorRegistro.style.display = "none";
+      }
+      document
+        .getElementById("volverLoginRecuperacionBtn")
+        .addEventListener("click", function () {
+          var contenedorLogin = document.getElementById("contenedor-login");
+          contenedorLogin.style.display = "block";
+
+          var contenedorRecuperacion = document.getElementById(
+            "contenedor-recuperacion"
+          );
+          contenedorRecuperacion.style.display = "none";
+        });
+    });
+  </script>
+
+</body>
+
+</html>

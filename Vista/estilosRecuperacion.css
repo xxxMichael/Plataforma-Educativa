@@ -1,0 +1,63 @@
+body {
+    background-image: url('https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/loginbgimage/1701194641/2_fondo-gris-deadv.jpg');
+    background-size: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  h2 {
+    font-weight: bold;
+    font-size: 46px; /* Ajusta el tamaño del texto según tus preferencias */
+    margin-bottom: 20px;
+    color: #000000; /* Cambia el color del texto si lo deseas */
+    /* Otros estilos adicionales si los necesitas */
+}
+  
+  form {
+    max-width: 600px; /* Aumenté el ancho del formulario */
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px; /* Reduje el margen superior */
+  }
+    
+  form label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  form input {
+    font-size: 16px;
+    margin-bottom: 15px;
+    width: 90%;
+    padding: 12px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  
+  form button {
+    width: 90%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: #e2c5c550;
+    color: #000000;
+    text-align: center;
+    font-size: 18px;
+    margin-left: 5%;
+  }
+  
+  form button:hover {
+    background-color: #c6c7c9;
+  }
+  

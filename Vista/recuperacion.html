@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperación de Contraseña</title>
+    <link rel="stylesheet" href="estilosRecuperacion.css" />
+  </head>
+
+  <body>
+    <h2>Recuperación de Contraseña</h2>
+
+    <form id="formRecuperacion">
+      <input
+        type="hidden"
+        id="correoRecuperacion"
+        name="correoRecuperacion"
+        value=""
+      />
+      <div>
+        <label for="codigoVerificacion">Código de Verificación:</label>
+        <input
+          type="text"
+          id="codigoVerificacion"
+          name="codigoVerificacion"
+          required
+        />
+      </div>
+      <div>
+        <label for="nuevaContrasena">Nueva Contraseña:</label>
+        <input
+          type="password"
+          id="nuevaContrasena"
+          name="nuevaContrasena"
+          required
+        />
+      </div>
+      <div>
+        <label for="verificarContrasena">Verificar Contraseña:</label>
+        <input
+          type="password"
+          id="verificarContrasena"
+          name="verificarContrasena"
+          required
+        />
+      </div>
+      <button id="cambiar" type="submit">Cambiar Contraseña</button>
+    </form>
+    <div id="mensaje" class="mensaje"></div>
+
+    <script>
+      function mostrarMensaje(mensaje, color) {
+        var mensajeElemento = document.getElementById("mensaje");
+        mensajeElemento.textContent = mensaje;
+        mensajeElemento.style.color = color;
+        mensajeElemento.style.backgroundColor = "#ffe0e0";
+        mensajeElemento.style.display = "block";
+
+        setTimeout(function () {
+          mensajeElemento.style.display = "none";
+        }, 5000);
+      }
+
+      const correoRecuperacion = localStorage.getItem("correoRecuperacion");
+
+      const codigoRecuperacion = localStorage.getItem("codigoRecuperacion");
+
+      if (correoRecuperacion && codigoRecuperacion) {
+        // Asignar los valores a los campos ocultos
+        document.getElementById("correoRecuperacion").value =
+          correoRecuperacion;
+
+        // Agregar evento al formulario
+        document
+          .getElementById("formRecuperacion")
+          .addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            // Obtener valores de los campos
+            const codigoVerificacion =
+              document.getElementById("codigoVerificacion").value;
+            const nuevaContrasena =
+              document.getElementById("nuevaContrasena").value;
+            const verificarContrasena = document.getElementById(
+              "verificarContrasena"
+            ).value;
+            if (
+              codigoVerificacion === codigoRecuperacion &&
+              nuevaContrasena === verificarContrasena
+            ) {
+              var btnrec = document.getElementById("cambiar");
+              btnrec.disabled = true;
+              try {
+                const response = await fetch("recuperar_contrasena.php", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                  body: new URLSearchParams({
+                    accion: "actualizar_contrasena",
+                    "correo-recuperacion": correoRecuperacion,
+                    "nueva-contrasena": nuevaContrasena,
+                    "codigo-verificacion": codigoVerificacion,
+                  }),
+                });
+
+                if (response.ok) {
+                  const data = await response.json();
+                  // Puedes mostrar un mensaje de éxito o realizar otras acciones necesarias
+                  mostrarMensaje(data.message, "green");
+                  setTimeout(function () {
+                    window.location.href = "index.html";
+                  }, 3000);
+                } else {
+                  // Si hay un error en la respuesta, muestra el mensaje de error
+                  const data = await response.json();
+                  if (data && data.error) {
+                    btnrec.disabled = false;
+
+                    mostrarMensaje(data.error, "red");
+                  } else {
+                    btnrec.disabled = false;
+
+                    mostrarMensaje("Error al procesar la solicitud", "red");
+                  }
+                }
+              } catch (error) {
+                btnrec.disabled = false;
+
+                console.error("Error de red:", error);
+              }
+            } else {
+              // Código de verificación o contraseñas no coinciden
+              mostrarMensaje(
+                "Código de verificación o contraseñas no coinciden.",
+                "red"
+              );
+            }
+          });
+      } else {
+        // En caso de que los parámetros no estén presentes, puedes redirigir a una página de error o hacer algo más
+        mostrarMensaje(
+          "Ha ocurrido un error. Por favor, vuelva a enviar el correo.",
+          "red"
+        );
+        console.error(
+          "Parámetros incompletos. No se puede continuar con la recuperación de contraseña."
+        );
+      }
+    </script>
+  </body>
+</html>

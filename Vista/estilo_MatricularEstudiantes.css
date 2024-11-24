@@ -1,0 +1,198 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+#chat-container {
+  padding: 10px;
+  border: none;
+  border-top: 1px solid rgb(175, 42, 42);
+  outline: none;
+}
+#user-input {
+  padding: 10px;
+  border: none;
+  border-top: 1px solid rgb(175, 42, 42);
+  outline: none;
+}
+#barra_superior {
+  background-color: rgb(67, 67, 67);
+  color: #fff; /* Color de texto blanco */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 6px;
+  border-bottom: 1px solid #fff; /* Borde inferior blanco */
+}
+#btn_mis_asignaturas {
+  background-color: transparent;
+  border: none; /* Elimina el borde del botón */
+  color: #fff; /* Color del texto blanco */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#miLista {
+  list-style-type: none;
+  padding: 0;
+}
+#miLista li {
+  margin-bottom: 5px;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+#contenedorLista {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#asignaturasContainer button.cuadrado-asignatura {
+  background-color: transparent; /* Fondo transparente */
+  color: rgb(3, 3, 3); /* Color del texto */
+  border: 2px solid #ffffff; /* Borde de 2px sólido blanco */
+  padding: 10px; /* Relleno interno */
+  margin: 5px; /* Margen externo */
+  width: 10%;
+  height: 10%;
+  border-radius: 5px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+}
+
+#asignaturasContainer button.cuadrado-asignatura:hover {
+  background-color: #d62f2f; /* Cambiar fondo en hover */
+  color: #f5f2f2; /* Cambiar color del texto en hover */
+}
+#barra_superior2 {
+  background-color: rgb(175, 42, 42);
+  color: #fff; /* Color de texto blanco */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 35px;
+  height: 85px;
+}
+#barra_superior2 img {
+  border-radius: 50%;
+  margin-right: 1px;
+  margin-left: -23px;
+  margin-top: -45px;
+}
+#btn_dashboard,
+#btn_mis_cursos {
+  background-color: transparent;
+  border: none; /* Elimina el borde del botón */
+  color: #fff; /* Color del texto blanco */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#btn_registroCurso {
+  background-color: transparent;
+  border: none; /* Elimina el borde del botón */
+  color: #fff; /* Color del texto blanco */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#notifications,
+#perfil {
+  background-color: transparent;
+  border: none; /* Elimina el borde del botón */
+  color: #fff; /* Color del texto blanco */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#notifications img,
+#perfil img {
+  margin-right: 5px;
+}
+#btn_dashboard img,
+#btn_mis_cursos img {
+  margin-right: 5px; /* Espacio entre la imagen y el texto */
+}
+#btn_registroAsignatura {
+  background-color: transparent;
+  border: none; /* Elimina el borde del botón */
+  color: #fff; /* Color del texto blanco */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#btn_MatricularEstudiantes {
+  background-color: transparent;
+  border: none; /* Elimina el borde del botón */
+  color: #fff; /* Color del texto blanco */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+#barra_superior img {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+#cinta_opciones {
+  background-color: rgb(67, 67, 67);
+  color: #fff;
+  display: flex;
+  justify-content: flex-start; /* Alinea los elementos al principio del contenedor */
+  align-items: center;
+  padding: 12px;
+  margin-top: -45px; /* Ajustado para alinearse con la parte inferior de barra_superior2 */
+}
+#cinta_opciones button {
+  margin-right: 10px; /* Agrega espacio entre los botones */
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease; /* Transición de color de fondo */
+}
+#cinta_opciones button:hover {
+  background-color: red; /* Cambia el color de fondo al pasar el ratón */
+}
+#perfil img {
+  border: 2px solid #fff; /* Borde blanco para la imagen de perfil */
+}
+
+#contenedorFormulario {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+}
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#btn_dashboard img,
+#btn_mis_asignaturas img,
+#btn_registroCurso img,
+#btn_inicio img,
+#btn_RegistrarUsuario img,
+#btn_registroAsignatura img,
+#btn_MatricularEstudiantes img {
+  margin-right: 5px; /* Espacio entre la imagen y el texto */
+}

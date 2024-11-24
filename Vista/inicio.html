@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home</title>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="index.js"></script>
+
+  <link rel="icon"
+    href="https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/favicon/1702489518/sistemas.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div id="barra_superior">
+    <button id="notifications" onclick="toggleNotifications()">
+      <img src="IMG/Campana.png" alt="" width="30" height="30" />
+    </button>
+
+
+    <button id="perfil" class="show-btn">
+      <img src="IMG/Perfil.jpg" alt="" width="20" height="20" />
+    </button>
+
+    <div id="notifications-popup">
+      <p>Notificaciones:
+
+      </p>
+      <ul>
+
+      </ul>
+    </div>
+  </div>
+  <script>
+    function toggleNotifications() {
+      const notificationsPopup = document.getElementById('notifications-popup');
+      notificationsPopup.style.display = (notificationsPopup.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+  <div id="perfil-popup" onclick="togglePerfilPopup()">
+    <img src="IMG/Perfil.jpg" alt="" width="100" height="100" />
+    <p>Nombre: <span id="nombreUsuario"></span></p>
+    <p>Apellido: <span id="apellidoUsuario"></span></p>
+    <p>Rol: <span id="rolUsuario"></span></p>
+    <p>Correo: <span id="correoUsuario"></span></p>
+    <button id="cerrar-sesion-btn" onclick="ocultarPerfil()">Cerrar Sesión</button>
+  </div>
+
+  </div>
+  <div id="barra_superior2">
+    <img src="https://sistemaseducaciononline.uta.edu.ec/pluginfile.php/1/theme_adaptable/logo/1702489518/sistemas.png"
+      alt="" width="250" height="90" />
+    <h1 id="encabezado">Plataforma Educativa UTA</h1>
+
+  </div>
+
+  <div id="cinta_opciones" class="hidden">
+    <button id="btn_inicio" class="hidden" onclick="redirectToInicio()">
+      <img src="IMG/House.png" alt="" width="30" height="30" />
+      Inicio
+    </button>
+    <button id="btn_dashboard" class="hidden" onclick="redirectToAsignarTareas()">
+      <img src="IMG/Libreta.png" alt="" width="30" height="30" />
+      Tareas
+    </button>
+    <button id="btn_mis_asignaturas" class="hidden" onclick="traerAsignaturas()">
+      <img src="IMG/Mochila.png" alt="" width="30" height="30" />
+      Mis Asignaturas
+    </button>
+    <button id="btn_registroCurso" class="hidden" onclick="redirectToRegistroCurso()">
+      <img src="IMG/Lista.png" alt="" width="25" height="25" />
+      Registrar Curso
+    </button>
+    <button id="btn_registroAsignatura" class="hidden" onclick="redirectToRegistroAsignatura()">
+      <img src="IMG/Profesor.png" alt="" width="30" height="30" />
+      Registrar Asignatura
+    </button>
+    <button id="btn_MatricularEstudiantes" class="hidden" onclick="redirectToMatricularEstudiante()">
+      <img src="IMG/Estudiante.png" alt="" width="30" height="30" />
+      Matricular Estudiante
+    </button>
+    <button id="btn_RegistrarUsuario" class="hidden" onclick="redirectToRegistroUsuario()">
+      <img src="IMG/Usuarios.png" alt="" width="30" height="30" />
+      Registrar Usuario
+    </button>
+  </div>
+
+  <div id="chat-container">
+    <div id="chat-box" onclick="toggleChat()">
+      <img id="user-image" src="ImgBot/Imagen1.png" alt="Usuario" width="150" height="150">
+      <img id="pointer-gif" src="ImgBot/Puntero.gif" alt="Puntero" width="50" height="50">
+      <input type="text" id="user-input" placeholder="Escribe un mensaje..." onkeydown="sendMessage(event)">
+    </div>
+  </div>
+  <script>
+
+
+    ////////notificaciones
+    function marcarNotificacionLeida(idNotificacion) {
+      // Obtener el idEstudiante de la cache del navegador (aquí asumimos que ya está almacenado)
+      var idEstudiante = localStorage.getItem("correousuario");
+
+      // Verificar que tengamos un idEstudiante válido
+      if (!idEstudiante) {
+        console.error('No se puede obtener el idEstudiante desde la cache.');
+        return;
+      }
+
+      // Configurar la solicitud
+      var url = "../Conexion/Gestor_Conexion.php"; // Ajusta la ruta según tu estructura de archivos
+      var data = {
+        accion: 'marcarNotificacionLeida',
+        idNotificacion: idNotificacion,
+        idEstudiante: idEstudiante
+      };
+      console.log(data.idNotificacion);
+
+      // Realizar la solicitud utilizando fetch
+      fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.error) {
+                console.error(responseData.mensaje);
+            } else {
+                console.log('Notificación marcada como leída correctamente.');
+                // Puedes realizar acciones adicionales aquí si es necesario
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud fetch: " + error);
+        });
+    }
+
+
+    function cargarNotificaciones() {
+      const correo = localStorage.getItem("correousuario");
+      fetch('../Clases/mostrarNotificaciones.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: "correoUsuario=" + encodeURIComponent(correo),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Error en la solicitud al servidor: " + response.status);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Datos:", data);
+          actualizarInterfaz(data);
+
+          /*if (data.error) {
+            console.error('Error al obtener notificaciones:', data.mensaje);
+          } else {
+            // Actualizar la interfaz de usuario con las notificaciones obtenidas
+          }*/
+        })
+        .catch(error => {
+          console.error('Error al cargar notificaciones:', error);
+        });
+    }
+
+    function actualizarInterfaz(notificaciones) {
+      var notificationsList = $('#notifications-popup ul');
+
+      // Limpiar las notificaciones existentes
+      notificationsList.empty();
+
+      // Agregar las nuevas notificaciones al div
+      notificaciones.forEach(function (notificacion) {
+        // Verificar si es una instancia de Notificacion y tiene las propiedades necesarias
+        if (notificacion instanceof Object && notificacion.hasOwnProperty('mensaje') && notificacion.hasOwnProperty('fecha')) {
+          // Formatear la fecha (puedes ajustar el formato según tus preferencias)
+          var fechaFormateada = new Date(notificacion.fecha).toLocaleString();
+          var not=notificacion.notificacion;
+          // Agregar la notificación a la lista
+          notificationsList.append('<li onclick="marcarNotificacionLeida(\'' + not + '\')">' + notificacion.mensaje + ' - ' + fechaFormateada + '</li>');
+
+        } else {
+          console.error('El objeto proporcionado no es una instancia válida de Notificacion:', notificacion);
+        }
+      });
+    }
+                                            //fin notificiaciones
+    /////inicio InfoPerfil
+    function togglePerfilPopup() {
+      const perfilButton = document.getElementById('perfil');
+      const perfilPopup = document.getElementById('perfil-popup');
+
+      // Obtener la posición del botón Perfil
+      const perfilButtonRect = perfilButton.getBoundingClientRect();
+
+      // Ajustar la posición del perfil-popup
+      perfilPopup.style.top = (perfilButtonRect.bottom + 145) + 'px';
+      perfilPopup.style.left = (perfilButtonRect.left - 105) + 'px';
+
+      // Alternar la clase para mostrar/ocultar
+      perfilPopup.classList.toggle('show');
+    }
+
+    function mostrarPerfil() {
+      const perfilPopup = document.getElementById('perfil-popup');
+      perfilPopup.classList.add('show');
+    }
+
+    function ocultarPerfil() {
+      const perfilPopup = document.getElementById('perfil-popup');
+      perfilPopup.classList.remove('show');
+    }
+
+    function cerrarSesion() {
+      // Limpiar datos de localStorage y redirigir a la página de inicio de sesión
+      localStorage.clear();
+      window.location.href = 'index.html';
+    }
+    document.addEventListener('click', function (event) {
+      const perfilPopup = document.getElementById('perfil-popup');
+      const perfilButton = document.getElementById('perfil');
+
+      if (event.target !== perfilButton && !perfilPopup.contains(event.target)) {
+        ocultarPerfil();
+      }
+    });
+
+    document.getElementById('perfil').addEventListener('click', function (event) {
+      event.stopPropagation(); // Prevenir que el evento de clic llegue al oyente de clic del documento
+      togglePerfilPopup();
+    });
+    document.getElementById('perfil-popup').addEventListener('click', function (event) {
+      // Detener la propagación del evento de clic dentro del perfil-popup
+      event.stopPropagation();
+    });
+
+    document.getElementById('cerrar-sesion-btn').addEventListener('click', cerrarSesion);
+
+    ////Fin infoPerfil
+
+    window.onload = function () {
+      const correoUsuario = localStorage.getItem("correousuario");
+      const rolUsuario = localStorage.getItem("rol");
+
+      // Verificar si el correoUsuario es null o undefined
+      if (!correoUsuario) {
+        //mostrarMensajeError("Ocurrió un error, por favor vuelva a iniciar sesión.");
+
+        // Después de 4 segundos, ocultar el mensaje y redirigir a index.html
+        /* setTimeout(function () {
+             ocultarMensajeError();
+             window.location.href = "index.html";
+         }, 4000);
+         */
+      } else {
+        // Llamar a la función consultarUsuario del Gestor_Conexion.php
+        consultarUsuario(correoUsuario);
+        if (rolUsuario && rolUsuario.toLowerCase() === "estudiante") {
+          // El rol es estudiante, ocultar el botón Registrar Usuario
+          const btnRegistrarUsuario = document.getElementById('btn_RegistrarUsuario');
+          if (btnRegistrarUsuario) {
+            btnRegistrarUsuario.style.display = "none";
+          }
+          const btnRegistrarcurso = document.getElementById('btn_registroCurso');
+          if (btnRegistrarcurso) {
+            btnRegistrarcurso.style.display = "none";
+          }
+          const btn_registrarasig = document.getElementById('btn_registroAsignatura');
+          if (btn_registrarasig) {
+            btn_registrarasig.style.display = "none";
+          }
+          cargarNotificaciones();;
+        }
+      }
+
+    }
+    function mostrarMensajeError(mensaje) {
+      // Crear un elemento div para mostrar el mensaje de error
+      var errorDiv = $('<div class="error-message">' + mensaje + '</div>');
+      // Añadir el elemento al cuerpo del documento
+      $('body').append(errorDiv);
+
+      // Después de 4 segundos, ocultar el mensaje y eliminar el elemento del DOM
+      setTimeout(function () {
+        errorDiv.fadeOut(500, function () {
+          errorDiv.remove();
+        });
+      }, 4000);
+    }
+
+    function ocultarMensajeError() {
+      // Ocultar el mensaje eliminando el elemento del DOM
+      $('.alert').remove();
+    }
+    function consultarUsuario(correoUsuario) {
+      const errorDiv = document.createElement('div');
+      //console.log(correoUsuario);
+      // Configurar la solicitud Fetch
+      fetch("../Clases/consultaUsuario.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "correo=" + encodeURIComponent(correoUsuario),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Error en la solicitud al servidor: " + response.status);
+          //  mostrarMensajeError("Ocurrió un error, por favor vuelva a iniciar sesión.");
+
+            // Después de 4 segundos, ocultar el mensaje y redirigir a index.html
+         /*   setTimeout(function () {
+                ocultarMensajeError();
+                window.location.href = "index.html";
+            }, 4000);  
+          */        }
+          return response.json();
+        })
+        .then(usuario => {
+          if (usuario && usuario.nombre && usuario.apellido && usuario.clave) {
+            localStorage.setItem('nombre', usuario.nombre);
+            localStorage.setItem('apellido', usuario.apellido);
+            localStorage.setItem('rol', usuario.clave);
+          }
+          document.getElementById('nombreUsuario').textContent = localStorage.getItem('nombre').toUpperCase();
+          document.getElementById('apellidoUsuario').textContent = localStorage.getItem('apellido').toUpperCase();
+          document.getElementById('rolUsuario').textContent = localStorage.getItem('rol').toUpperCase();
+          document.getElementById('correoUsuario').textContent = correoUsuario.toUpperCase();;
+
+
+
+          // Aquí puedes usar los datos del usuario en tu página HTML
+        })
+        .catch(error => {
+          console.error("Error durante el manejo de la solicitud, por favor vuelva a iniciar sesión");
+          /*   mostrarMensajeError("Ocurrió un error, por favor vuelva a iniciar sesión.");
+   
+           // Después de 4 segundos, ocultar el mensaje y redirigir a index.html
+           setTimeout(function () {
+               ocultarMensajeError();
+               window.location.href = "index.html";
+           }, 4000);
+           */
+
+        });
+    }
+
+
+    function traerAsignaturas() {
+      const rolUsuario = localStorage.getItem("rol");
+      if (rolUsuario == "estudiante") {
+        window.location.href = 'mostrarAsignaturaE.html';
+      } else {
+        window.location.href = 'mostrarAsignaturasD.html';
+      }
+    }
+    function redirectToAsignarTareas() {
+      const rolUsuario = localStorage.getItem("rol");
+      if (rolUsuario == "estudiante") {
+        window.location.href = 'mostrarTareas.html';
+      } else {
+        window.location.href = 'mostrarTareasDocentes.html';
+      }
+    }
+    function redirectToRegistroAsignatura() {
+      window.location.href = 'registro_Asignaturas.html';
+    }
+    function redirectToMatricularEstudiante() {
+      window.location.href = 'matricularEstudiante.html';
+    }
+    function redirectToRegistroUsuario() {
+      window.location.href = 'registro_Usuarios.html';
+    }
+    function redirectToRegistroCurso() {
+      window.location.href = 'registro_Cursos.html';
+    }
+    function redirectToInicio() {
+      window.location.href = 'inicio.html';
+    }
+    ////////chatbot
+    var chatActivated = false;
+
+    function toggleChat() {
+      var inputElement = document.getElementById("user-input");
+      var pointerElement = document.getElementById("pointer-gif");
+      var imagen = document.getElementById("user-image");
+      // Si el chat aún no está activado, mostrar el input y ocultar el puntero
+      if (!chatActivated) {
+        inputElement.style.display = "block";
+        pointerElement.style.display = "none";
+        showInput();
+      }
+
+
+    }
+    function showInput() {
+      var imageElement = document.getElementById("user-image");
+      var inputElement = document.getElementById("user-input");
+
+      // Oculta la imagen y muestra el campo de entrada al hacer clic
+      imageElement.style.display = "none";
+      inputElement.style.display = "block";
+
+      // Coloca el foco en el campo de entrada
+      inputElement.focus();
+    }
+    var botResponses = [
+      '¡No quiero hablar en este momento!',
+      '¡No entiendes! que no quiero hablar.',
+      '¿Es que no sabes español?',
+      'I don\'t want to talk right now',
+      '¡Ya no puedo mas!'
+    ];
+    var botImages = [
+      'ImgBot/ImagenDefault.png', // Ruta de la imagen para la primera respuesta
+      'ImgBot/Imagen2.png', // Ruta de la imagen para la segunda respuesta
+      'ImgBot/Imagen3.png', // Ruta de la imagen para la tercera respuesta
+      'ImgBot/Imagen4.png', // Ruta de la imagen para la cuarta respuesta
+      'ImgBot/Imagen5.png'  // Ruta de la imagen para la quinta respuesta
+    ];
+
+
+
+
+    var currentResponseIndex = 0;
+
+    function sendMessage(event) {
+      if (event.key === 'Enter') {
+        var userMessage = document.getElementById('user-input').value;
+        console.log('Usuario:', userMessage);
+        appendMessage(' ');
+
+        var botResponse = getNextBotResponse();
+        setTimeout(function () {
+          appendBotMessage(botResponse.response, botResponse.index);
+          removeLastUserMessage();
+        }, 500); // Simula un pequeño retraso antes de que el bot responda
+      }
+    }
+
+    function getNextBotResponse() {
+      var response = botResponses[currentResponseIndex];
+      var index = currentResponseIndex;
+      currentResponseIndex = (currentResponseIndex + 1) % botResponses.length;
+      return { response, index };
+    }
+
+    function appendMessage(message) {
+      var chatBox = document.getElementById('chat-box');
+
+      // Eliminar mensajes anteriores del usuario
+      var userMessages = chatBox.querySelectorAll('.user-message');
+      userMessages.forEach(function (userMessage) {
+        chatBox.removeChild(userMessage);
+      });
+
+      // Agregar el nuevo mensaje del usuario
+      var newMessage = document.createElement('div');
+      newMessage.textContent = message;
+      newMessage.classList.add('user-message');
+      chatBox.appendChild(newMessage);
+
+      // Limpiar el cuadro de entrada después de enviar un mensaje
+      document.getElementById('user-input').value = '';
+
+      // Desplazar hacia abajo para mostrar el último mensaje
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+
+    function appendBotMessage(response, botResponseIndex) {
+      var chatBox = document.getElementById('chat-box');
+
+      // Obtener el último mensaje del bot
+      var lastBotMessage = chatBox.querySelector('.bot-message');
+
+      // Crear un elemento de imagen y establecer la ruta correspondiente
+      var imageElement = document.createElement('img');
+      imageElement.src = botImages[botResponseIndex];
+      imageElement.style.width = '5cm';  // Establecer el ancho a 6 centímetros
+
+      // Agregar el mensaje y la imagen al último elemento o crear uno nuevo
+      if (lastBotMessage) {
+        // Reemplazar el contenido del último mensaje del bot
+        lastBotMessage.innerHTML = '';
+      } else {
+        lastBotMessage = document.createElement('div');
+        chatBox.appendChild(lastBotMessage);
+      }
+
+      // Agregar clase para identificar mensajes del bot
+      lastBotMessage.classList.add('bot-message');
+
+      // Agregar el mensaje y la imagen al último elemento
+      lastBotMessage.appendChild(imageElement);
+      lastBotMessage.appendChild(document.createTextNode(response));  // Agregar el texto de respuesta
+
+      // Aplicar estilos al último mensaje para centrar el texto verticalmente
+      lastBotMessage.style.display = 'flex';
+      lastBotMessage.style.alignItems = 'center';
+
+      // Desplazar hacia abajo para mostrar el último mensaje
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function removeLastUserMessage() {
+      var chatBox = document.getElementById('chat-box');
+      var userMessages = chatBox.querySelectorAll(':not(.bot-message)');
+      var lastUserMessage = userMessages[userMessages.length - 1];
+
+      if (lastUserMessage) {
+        chatBox.removeChild(lastUserMessage);
+      }
+    }
+    //////fin chatbot
+
+
+  </script>
+</body>
+
+</html>
